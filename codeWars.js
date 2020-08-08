@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------------------------------------------------------------Simple string reversal---------------
+//--------------------------------------------------------------------------------------------------------------------------------------------Simple-string-reversal(7LVL)-------
 //Description:
 //In this Kata, we are going to reverse a string while maintaining the spaces (if any) in their original place.
 //
@@ -18,4 +18,43 @@ function solve(str) {
    }
    return result.join('')
 }
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------Over-the-road(7LVL)----------
+//You've just moved into a perfectly straight street with exactly n identical houses on either side of the road.
+//Naturally, you would like to find out the house number of the
+//people on the other side of the street. The street looks something like this:
+//
+//Street
+//1|   |6
+//3|   |4
+//5|   |2
+//Evens increase on the right; odds decrease on the left. House numbers start at 1 and increase without gaps. When n = 3, 1 is opposite 6, 3 opposite 4, and 5 opposite 2.
+//Given your house number address and length of street n, give the house number on the opposite side of the street.
+//
+//overTheRoad(address, n)
+//overTheRoad(1, 3) = 6
+
+const overTheRoad = (address, n) => (n*2)+1-address
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------Fix string case(7LVL)--
+//
+//Description:
+//In this Kata, you will be given a string that may have mixed uppercase and lowercase letters and your task is to
+//convert that string to either lowercase only or uppercase only based on:
+//
+//make as few changes as possible.
+//if the string contains equal number of uppercase and lowercase letters, convert the string to lowercase.
+//For example:
+//
+//solve("coDe") = "code". Lowercase characters > uppercase. Change only the "D" to lowercase.
+//solve("CODe") = "CODE". Uppercase characters > lowecase. Change only the "e" to uppercase.
+//solve("coDE") = "code". Upper == lowercase. Change all to lowercase.
+
+function solve(s){
+  let letter = 0
+  for (let i = 0; i < s.length; i++ ) {
+    s[i].toUpperCase() === s[i] ? letter++ : letter--
+  }
+  return letter <= 0 ? s.toLowerCase() : s.toUpperCase()
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

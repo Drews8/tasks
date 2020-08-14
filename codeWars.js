@@ -78,6 +78,117 @@ function generateName() {
   return photoManager.nameExists(result.join('')) ? generateName() : result.join('')  
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------------------------Next bigger number(4LVL)
+//Create a function that takes a positive integer and returns the next bigger number that can be formed by rearranging its digits. For example:
+//
+//nextBigger(num: 12)   // returns 21
+//nextBigger(num: 513)  // returns 531
+//nextBigger(num: 2017) // returns 2071
+//
+//If the digits can't be rearranged to form a bigger number, return -1 (or nil in Swift):
+
+function nextBigger(number) {
+  let result = Array.from(number.toString()).map(Number)
+  for (let i = result.length - 1; i >= 0; i--) {  
+    if (result[i - 1] < result[i]) {
+      let changeNum = i
+        for (let j = i; j < result.length; j++) {
+          if (result[i-1] < result[j] && result[j] < result[changeNum]) {
+            changeNum = j
+          }
+        }
+      let tmp = result[changeNum]   
+      result[changeNum] = result[i-1]
+      result[i-1] = tmp
+
+      let rightSide = result.slice(i)
+      rightSide.sort((a, b) => a - b)
+      return +(result.slice(0, i).join('') + rightSide.join(''))
+    }
+  }
+  return -1
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------Make a spiral(3LVL)
+//Your task, is to create a NxN spiral with a given size.
+//For example, spiral with size 5 should look like this:
+//
+//00000
+//....0
+//000.0
+//0...0
+//00000
+//and with the size 10:
+//
+//0000000000
+//.........0
+//00000000.0
+//0......0.0
+//0.0000.0.0
+//0.0..0.0.0
+//0.0....0.0
+//0.000000.0
+//0........0
+//0000000000
+//Return value should contain array of arrays, of 0 and 1, for example for given size 5 result should be:
+//
+//[[1,1,1,1,1],[0,0,0,0,1],[1,1,1,0,1],[1,0,0,0,1],[1,1,1,1,1]]
+
+const spiralize = function(size) {
+  const result = Array(size).fill(null).map(() => Array(size).fill(1))
+  const directions = Array(Math.ceil(size/4)).fill(['right', 'down', 'left', 'up']).reduce((acc, val) => acc.concat(val), []);
+  directions.length = size - 1
+  
+  let length = size - 1
+  let startPosX = 0, startPosY = 1
+  let endPosX = 0, endPosY = 1
+  const odd = size % 2
+  for (let i  = size - 1; i > 0; i--) {
+  
+      if (!((i + odd) % 2) && size > 5) {
+        i === size - 2 ? length-- : length -= 2
+      } else if (!((i) % 2) && size <= 5) {
+        if (i === size - 1) {
+          i--
+        } else {
+          length--
+        }
+      }
+    
+    switch(directions.shift()) {
+      
+      case 'right':
+        for (endPosX = startPosX + length - 1; startPosX <= endPosX; startPosX++) {
+          result[startPosY][startPosX] = 0
+        }
+        startPosX--
+        break
+
+      case 'down':
+        for (endPosY = startPosY + length - 1; startPosY <= endPosX; startPosY++) {
+          result[startPosY][startPosX] = 0
+        }
+        startPosY--
+        break
+
+      case 'left':
+        for (endPosX = startPosX - length + 1; startPosX >= endPosX; startPosX--) {
+          result[startPosY][startPosX] = 0
+        }
+        startPosX++
+        break
+
+      case 'up':
+        for (endPosY = startPosY - length + 1; startPosY >= endPosY; startPosY--) {
+          result[startPosY][startPosX] = 0
+        }
+        startPosY++
+        break
+    } 
+  }
+  return result
+}
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -109,7 +109,21 @@ function nextBigger(number) {
   return -1
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------Simple Fun #27: Rectangle Rotation(4LVL)
+//A rectangle with sides equal to even integers a and b is drawn on the Cartesian plane.
+//Its center (the intersection point of its diagonals) coincides with the point (0, 0),
+//but the sides of the rectangle are not parallel to the axes; instead, they are forming 45 degree angles with the axes.
+//
+//How many points with integer coordinates are located inside the given rectangle (including on its sides)?
+//P.S. For a = 6 and b = 4, the output should be 23
 
+function rectangleRotation(a, b) {
+  s = Math.sqrt(2)
+  let result = (Math.floor(a / s) + 1) * (Math.floor(b / s) + 1) + (Math.floor(a / s)) * (Math.floor(b / s))
+  return result % 2 === 1 ? result : --result
+  
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------------------------------------Make a spiral(3LVL)
 //Your task, is to create a NxN spiral with a given size.
 //For example, spiral with size 5 should look like this:

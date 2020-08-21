@@ -1,3 +1,12 @@
+//--------------------------------------------------------------------------------------------------------------------------------------------------Vowel Count(7LVL)------------
+//Description:
+//Return the number (count) of vowels in the given string.
+//We will consider a, e, i, o, u as vowels for this Kata (but not y).
+//The input string will only consist of lower case letters and/or spaces.
+
+const getCount = s => s.split('').filter(item => 'aeiou'.includes(item)).length
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------Simple-string-reversal(7LVL)-------
 //Description:
 //In this Kata, we are going to reverse a string while maintaining the spaces (if any) in their original place.

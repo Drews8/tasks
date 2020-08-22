@@ -213,7 +213,124 @@ const spiralize = function(size) {
   return result
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------Evaluate mathematical expression(2LVL)
+//Description:
+//Given a mathematical expression as a string you must return the result as a number.
+//Number may be both whole numbers and/or decimal numbers. The same goes for the returned result.
+//You need to support the following mathematical operators:
+//
+//Multiplication *
+//Division / (as true division)
+//Addition +
+//Subtraction -
+//Operators are always evaluated from left-to-right, and * and / must be evaluated before + and -.
+//You need to support multiple levels of nested parentheses, ex. (2 / (2 + 3.33) * 4) - -6
+
+function calc(exp) {
+  const findBrackets = (exp, startPos = 0) => {
+    if ((!(exp.includes('(') || exp.includes(')')))) {
+      return false
+    }
+    for (let i = startPos; i < exp.length; i++) {
+      switch (exp[i]) {
+        case '(':
+          let result = findBrackets(exp, i + 1)
+          return result
+        case ')':
+          let bracketsPos = [startPos - 1, i]
+          return bracketsPos
+      }
+    }
+  }
+  const solveExp = (exp) => {
+    const solveBaseExp = (a, b, operator) => {
+      switch (operator) {
+        case '+':
+          return a + b
+          break
+        case '-':
+          return a - b
+          break
+        case '/':
+          return a / b
+          break
+        case '*':
+          return a * b
+          break
+      }
+    }
+    const prepareExp = (exp) => {
+      exp = exp.toString().split('').filter(item => item !== ' ').join('').trim()
+      if (exp.includes('--')) {
+        exp = exp.slice(0, exp.indexOf('--')) + '+' + exp.slice(exp.indexOf('--') + 2)
+      } else if (exp.includes('++')) {
+        exp = exp.slice(0, exp.indexOf('++')) + '+' + exp.slice(exp.indexOf('++') + 2)
+      } else if (exp.includes('+-')) {
+        exp = exp.slice(0, exp.indexOf('+-')) + '-' + exp.slice(exp.indexOf('+-') + 2)
+      } else if (exp.includes('-+')) {
+        exp = exp.slice(0, exp.indexOf('-+')) + '-' + exp.slice(exp.indexOf('-+') + 2)
+      } else {
+        return exp
+      }
+      return prepareExp(exp)
+    }
+
+    exp = prepareExp(exp)
+    if (!(exp.includes('*') || exp.includes('/') || exp.includes('+'))) {
+      if (exp.indexOf('-', 1) === -1) {
+        return exp
+      }
+    }
+
+    let operator, operatorPos
+    if (exp.includes('*') && exp.includes('/')) {
+      if (exp.indexOf('*') > exp.indexOf('/')) {
+        operator = '/'
+      } else {
+        operator = '*'
+      }
+    } else if (exp.includes('*')) {
+      operator = '*'
+    } else if (exp.includes('/')) {
+      operator = '/'
+    } else if (exp.includes('+')) {
+      operator = '+'
+    } else if (exp.includes('-')) {
+      operator = '-'
+    }
+
+    operatorPos = exp.indexOf(operator)
+    const b = +parseFloat(exp.slice(operatorPos + 1))
+    let endPos = exp.indexOf(b, operatorPos) + b.toString().length
+    let startPos = operatorPos - 1
+    for (; startPos >= 0; startPos--) {
+      if (isNaN(Number(exp.slice(startPos, operatorPos)))) {
+        break
+      }
+
+    }
+    startPos++
+    let a = +exp.slice(startPos, operatorPos)
+    let currentResult = solveBaseExp(a, b, operator)
+    if ((isFinite(exp.slice(startPos - 1, startPos))
+        && exp.slice(startPos - 1, startPos) !== '')
+        && isFinite(currentResult.toString()[0])) {
+      currentResult = '+' + currentResult
+    }
+    result = exp.slice(0, startPos) + currentResult + exp.slice(endPos)
+    return solveExp(result)
+  }
+
+  while (findBrackets(exp)) {
+    let expPos = findBrackets(exp)
+    let result = solveExp(exp.slice(expPos[0] + 1, expPos[1]))
+
+    exp = exp.slice(0, expPos[0]) + result + exp.slice(expPos[1] + 1)
+
+  }
+  exp = solveExp(exp)
+  return +exp
+}
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
